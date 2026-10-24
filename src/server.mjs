@@ -1,4 +1,5 @@
 import http from 'node:http';
+import { createGitHubWebhookHandler } from './github.mjs';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -58,7 +59,7 @@ async function githubSignIn(code, clientId, clientSecret) {
 
 export function makeHandler({
   store = new PreferenceStore(), provider = openAIComplete,
-  env = process.env, githubWebhook = null
+  env = process.env, githubWebhook = createGitHubWebhookHandler(env)
 } = {}) {
   const host = env.HOST || '127.0.0.1';
   const local = env.LOCAL_DEV_MODE === '1';
