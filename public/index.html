@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#171b30">
+  <title>Inkwell SO · Spellcheck Pony</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script type="module" src="/app.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><span class="seal" aria-hidden="true">✒</span><div><strong>Inkwell <span>SO</span></strong><small>Spellcheck Only</small></div></div>
+    <div class="account"><span id="account">Loading…</span><a id="login" class="small-btn" href="/login" hidden>Sign in with GitHub</a><button id="logout" type="button" class="small-btn" hidden>Sign out</button></div>
+  </header>
+  <main>
+    <div class="intro"><span class="eyebrow">A better red pen</span><h1>Keep your words.<br><em>Fix the typos.</em></h1><p>Correct obvious spelling mistakes without rewriting your voice, GitHub links, code, or formatting.</p></div>
+    <div id="notice" class="notice" role="status" aria-live="polite"></div>
+    <div class="layout">
+      <section class="panel composer" aria-labelledby="editor-title">
+        <div class="panel-top"><h2 id="editor-title">Proofread</h2><span class="muted">Only spelling corrections</span></div>
+        <label for="input">Your text</label><textarea id="input" spellcheck="false" placeholder="Paste a comment, PR description, or document here…" maxlength="12000"></textarea>
+        <div class="actions"><span id="count">0 / 12,000</span><button type="button" id="check" class="primary">Spellcheck →</button></div>
+        <label for="output">Corrected text</label><textarea id="output" readonly placeholder="Your corrected text will appear here."></textarea>
+        <div class="actions"><span id="result" aria-live="polite"></span><button id="copy" class="small-btn" type="button" disabled>Copy result</button></div>
+      </section>
+      <section class="panel preferences" aria-labelledby="preferences-title">
+        <div class="panel-top"><h2 id="preferences-title">Your preferences</h2><span class="muted">Saved for your account</span></div>
+        <label for="dialect">Spelling convention</label><select id="dialect"><option value="preserve">Preserve the original</option><option value="en-US">US English</option><option value="en-GB">UK English</option></select>
+        <label for="sensitivity">Correction sensitivity</label><select id="sensitivity"><option value="conservative">Conservative · clear typos only</option><option value="standard">Standard · common misspellings</option></select>
+        <label for="customWords">Protected vocabulary <span class="hint">one term per line</span></label><textarea id="customWords" class="short" placeholder="Sweetiebot&#10;Soroban&#10;WhyDRS"></textarea>
+        <label for="extraInstructions">Additional spelling preferences <span class="hint">optional</span></label><textarea id="extraInstructions" class="short" maxlength="1500" placeholder="Preserve project-specific acronyms and character names."></textarea>
+        <label for="githubReplyMode">GitHub bot replies</label><select id="githubReplyMode"><option value="corrected">Corrected text</option><option value="diff">Side-by-side-friendly diff</option></select>
+        <button type="button" id="save" class="secondary">Save preferences</button>
+        <div class="divider"></div>
+        <h3>GitHub integration</h3>
+        <p class="muted">Install Spellcheck Pony on the repositories where you want to request corrections. Add a comment beginning with <code>/spellcheck</code>.</p>
+        <a class="small-btn install" href="https://github.com/apps/spellcheck-pony/installations/new" rel="noopener noreferrer" target="_blank">Install / manage Spellcheck Pony ↗</a>
+        <p class="fine-print">GitHub delivery requires a running webhook server, GitHub App credentials, and a model API key. Installation alone does not activate the bot.</p>
+      </section>
+    </div>
+  </main>
+  <footer>Inkwell SO · No text is stored by this interface. Spellcheck requests are sent to the configured model provider.</footer>
+</body>
+</html>
