@@ -1,0 +1,12 @@
+{"input":"Pleese reveiw the documment.","output":"Please review the document."}
+{"input":"I wnated to chek the text.","output":"I wanted to check the text."}
+{"input":"The commisson will reveiw the filing.","output":"The commission will review the filing."}
+{"input":"This part is alredy correct.","output":"This part is already correct."}
+{"input":"No spelling changes are needed.","output":"No spelling changes are needed."}
+{"input":"Keep `git push --force-with-lease` unchagned.","output":"Keep `git push --force-with-lease` unchanged."}
+{"input":"Soroban smart contrcts run on Stellar.","output":"Soroban smart contracts run on Stellar."}
+{"input":"The pull requset is open.","output":"The pull request is open."}
+{"input":"Dont alter the URL https://example.org/mispelled.","output":"Dont alter the URL https://example.org/mispelled."}
+{"input":"- Pleese check this line.\n- The next line is fine.","output":"- Please check this line.\n- The next line is fine."}
+{"input":"BlockTransfer is an existng name.","output":"BlockTransfer is an existing name."}
+{"input":"I dont want grammer changes, only typos.","output":"I dont want grammar changes, only typos."}

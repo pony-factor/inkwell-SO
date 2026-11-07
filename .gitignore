@@ -6,3 +6,9 @@ data/
 *.pem
 *.key
 .DS_Store
+.venv/
+train/pairs.jsonl
+train/data/
+train/adapters/
+train/fused/
+train/*.gguf
