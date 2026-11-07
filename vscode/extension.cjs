@@ -17,7 +17,7 @@ async function runSpellcheck(vscode, editor, dependencies = {}) {
   };
   const env = {
     OLLAMA_URL: config.get('ollama.url', 'http://127.0.0.1:11434'),
-    OLLAMA_MODEL: config.get('ollama.model', 'qwen3:4b'),
+    OLLAMA_MODEL: config.get('ollama.model', 'inkwell:0.1.0'),
     OLLAMA_TIMEOUT_MS: String(config.get('ollama.timeoutMs', 30_000))
   };
   try {

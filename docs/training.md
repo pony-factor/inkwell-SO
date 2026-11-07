@@ -1,6 +1,8 @@
 # Prepare a personal spellchecking model
 
-The working Ollama integration uses an existing model and the strict prompt.
+The initial **Inkwell 0.1.0** model (`inkwell:0.1.0`) is a prompt-configured
+Qwen3 model produced by `ollama create inkwell:0.1.0 -f models/Modelfile`.
+It has not been fine-tuned. It uses the existing model and the strict prompt.
 Fine-tuning is **optional and not yet performed**. Train only on corrections
 you have explicitly reviewed and approved: an automatic model's guessed output
 is not reliable ground truth.
@@ -58,11 +60,12 @@ mlx_lm.lora --model mlx-community/Qwen3-4B-4bit \
   --adapter-path train/adapters --data train/data --test
 ```
 
-After a separately verified export/import to Ollama, compare a base
-`OLLAMA_MODEL=qwen3:4b` against the tuned model:
+After a separately verified export/import to Ollama, compare the first
+**Inkwell 0.1.0** model against a newer tuned model, each with its own tag:
 
 ```sh
-OLLAMA_MODEL=qwen3:4b node train/evaluate.mjs train/data/test.jsonl
+OLLAMA_MODEL=inkwell:0.1.0 node train/evaluate.mjs train/data/test.jsonl
+OLLAMA_MODEL=inkwell:0.2.0 node train/evaluate.mjs train/data/test.jsonl
 ```
 
 The evaluation reports exact-match accuracy, rejected responses, and
@@ -73,4 +76,7 @@ Merging an adapter and converting Qwen MLX weights into a supported GGUF
 requires an export workflow validated against the versions installed locally;
 do not assume the MLX GGUF exporter supports Qwen. Once you have verified a
 GGUF, import it with an Ollama Modelfile using `FROM ./model.gguf`,
-then set the extension's `inkwell.ollama.model` to the new model name.
+then create a **new versioned tag** (for example `inkwell:0.2.0`),
+and set the extension's `inkwell.ollama.model` to that tag. Do not
+claim a new model version has been trained until its weights and
+held-out results have been independently verified.

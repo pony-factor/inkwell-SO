@@ -1,5 +1,8 @@
 import { openAIComplete } from './core.mjs';
 
+// Human name: Inkwell 0.1.0; Ollama uses the model:tag format.
+export const DEFAULT_OLLAMA_MODEL = 'inkwell:0.1.0';
+
 const LOCAL_HOSTS = new Set(['localhost', '127.0.0.1', '[::1]']);
 
 export function ollamaEndpoint(value = 'http://127.0.0.1:11434') {
@@ -15,7 +18,7 @@ export function ollamaEndpoint(value = 'http://127.0.0.1:11434') {
 
 export function makeOllamaComplete({ env = process.env, fetchImpl = fetch } = {}) {
   const endpoint = ollamaEndpoint(env.OLLAMA_URL || 'http://127.0.0.1:11434');
-  const model = env.OLLAMA_MODEL || 'qwen3:4b';
+  const model = env.OLLAMA_MODEL || DEFAULT_OLLAMA_MODEL;
   if (typeof model !== 'string' || !model.trim()) throw new TypeError('OLLAMA_MODEL is required');
   const timeoutMs = Number(env.OLLAMA_TIMEOUT_MS || 30_000);
   if (!Number.isSafeInteger(timeoutMs) || timeoutMs < 1_000 || timeoutMs > 120_000) {

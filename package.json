@@ -58,8 +58,8 @@
         },
         "inkwell.ollama.model": {
           "type": "string",
-          "default": "qwen3:4b",
-          "description": "Installed Ollama model to use for spelling corrections."
+          "default": "inkwell:0.1.0",
+          "description": "Versioned Inkwell model tag in Ollama (default: Inkwell 0.1.0)."
         },
         "inkwell.ollama.timeoutMs": {
           "type": "integer",
