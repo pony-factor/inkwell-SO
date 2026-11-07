@@ -10,3 +10,4 @@ train/**
 *.pem
 *.key
 .DS_Store
+.vscode/**

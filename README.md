@@ -6,7 +6,7 @@ The spellchecker corrects clear mistakes without intending to rewrite the author
 
 ## Run locally
 
-Requires **Node.js 20+** and an OpenAI API key. There are no npm runtime dependencies.
+Requires **Node.js 20+** and a model provider: either an OpenAI API key or a local Ollama installation. There are no npm runtime dependencies.
 
 ```sh
 cp .env.example .env
@@ -16,9 +16,24 @@ npm start
 npm test
 ```
 
-Open **http://127.0.0.1:3000**. `LOCAL_DEV_MODE=1` runs without GitHub sign-in **only on loopback**; never expose this mode to the internet.
+For fully local spellchecking, install [Ollama](https://ollama.com/), run `ollama pull qwen3:4b`, and set `MODEL_PROVIDER=ollama` instead of providing an OpenAI API key. Open **http://127.0.0.1:3000**. `LOCAL_DEV_MODE=1` runs without GitHub sign-in **only on loopback**; never expose this mode to the internet. See [local Ollama setup](docs/local-ollama.md).
 
 The interface offers spelling convention, sensitivity, protected project words, additional spelling preferences, and GitHub reply style. Settings persist by numeric GitHub user ID in `data/users.json` (or `DATA_FILE`) and apply to both the browser and GitHub comment commands. Local development uses a separate `local` profile.
+
+## Use locally inside VS Code
+
+The same spellchecking core runs as a local VS Code extension, with no Inkwell
+server or hosted model required. Run `ollama pull qwen3:4b`, open this
+repository in VS Code, and press **F5** to start an Extension Development Host.
+Select text and run **Inkwell SO: Spellcheck Selection** from the Command
+Palette, or use **Cmd+Option+Shift+S** on macOS.
+
+The extension replaces only selected text, makes one undoable edit, and
+discards stale responses if the document changes. Configure the local model
+using `inkwell.ollama.model`. See [VS Code setup](docs/vscode.md).
+
+To build a future personalized model, see the [training-data and evaluation
+workflow](docs/training.md). The repository does not include trained weights.
 
 ## Configure the existing GitHub App
 
@@ -56,4 +71,4 @@ Corrected text is quoted in a code fence (or a line-oriented diff, if that optio
 - `POST /api/github/webhook` — signed GitHub delivery.
 - `prompts/spellcheck-only.md` — portable canonical prompt, usable without a server.
 
-Submitted text isn't saved by the service, **but it is sent to the configured model provider**. Session cookies are HttpOnly and SameSite; public login requires HTTPS. This project is an implementation starter, not a deployed service.
+Submitted text isn't saved by the service. With the OpenAI provider, **it is sent to OpenAI**; with the local Ollama provider, it is sent only to the configured loopback Ollama instance. Session cookies are HttpOnly and SameSite; public login requires HTTPS. This project is an implementation starter, not a deployed service.
