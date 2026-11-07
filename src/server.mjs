@@ -4,7 +4,8 @@ import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { PreferenceStore } from './storage.mjs';
-import { normalizePreferences, openAIComplete, spellcheckText } from './core.mjs';
+import { normalizePreferences, spellcheckText } from './core.mjs';
+import { selectCompletionProvider } from './ollama.mjs';
 import { matchOAuthState, newOAuthState, parseCookies, signedSession, verifySession } from './auth.mjs';
 
 const BASE_DIR = fileURLToPath(new URL('../', import.meta.url));
@@ -58,7 +59,7 @@ async function githubSignIn(code, clientId, clientSecret) {
 }
 
 export function makeHandler({
-  store = new PreferenceStore(), provider = openAIComplete,
+  store = new PreferenceStore(), provider,
   env = process.env, githubWebhook = createGitHubWebhookHandler(env)
 } = {}) {
   const host = env.HOST || '127.0.0.1';
@@ -77,6 +78,7 @@ export function makeHandler({
     throw new Error('Public GitHub sign-in must use HTTPS APP_BASE_URL');
   }
 
+  const complete = provider || selectCompletionProvider(env);
   return async (req, res) => {
     res.setHeader('X-Content-Type-Options', 'nosniff');
     res.setHeader('Referrer-Policy', 'no-referrer');
@@ -117,7 +119,7 @@ export function makeHandler({
         return;
       }
       if (req.method === 'POST' && pathname === '/api/github/webhook' && githubWebhook) {
-        return await githubWebhook(req, res, { store, provider });
+        return await githubWebhook(req, res, { store, provider: complete });
       }
       if (req.method === 'GET' && pathname === '/api/preferences') {
         if (!user) return fail(res, 401, 'Sign in with GitHub first');
@@ -139,7 +141,7 @@ export function makeHandler({
           return json(res, 200, store.set(user.id, normalizePreferences(payload)));
         }
         if (typeof payload?.text !== 'string') throw new TypeError('text must be a string');
-        return json(res, 200, await spellcheckText(payload.text, store.get(user.id), provider));
+        return json(res, 200, await spellcheckText(payload.text, store.get(user.id), complete));
       }
       fail(res, 404, 'Not found');
     } catch (error) {
