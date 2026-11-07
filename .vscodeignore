@@ -1,0 +1,12 @@
+.env
+.env.*
+data/**
+node_modules/**
+.github/**
+test/**
+public/**
+docs/**
+train/**
+*.pem
+*.key
+.DS_Store

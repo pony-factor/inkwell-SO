@@ -1,9 +1,103 @@
 {
   "name": "inkwell-so",
-  "version": "0.1.0",
+  "displayName": "Inkwell SO",
+  "description": "Minimal-edit spelling correction with local Ollama models",
+  "version": "0.2.0",
   "private": true,
+  "publisher": "pony-factor",
   "type": "module",
-  "engines": { "node": ">=20" },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pony-factor/inkwell-SO.git"
+  },
+  "engines": {
+    "node": ">=20",
+    "vscode": "^1.90.0"
+  },
+  "main": "./vscode/extension.cjs",
+  "extensionKind": [
+    "ui"
+  ],
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onCommand:inkwell.spellcheckSelection"
+  ],
+  "contributes": {
+    "commands": [
+      {
+        "command": "inkwell.spellcheckSelection",
+        "title": "Inkwell SO: Spellcheck Selection"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "inkwell.spellcheckSelection",
+        "key": "ctrl+alt+shift+s",
+        "mac": "cmd+alt+shift+s",
+        "when": "editorTextFocus && editorHasSelection"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "command": "inkwell.spellcheckSelection",
+          "when": "editorHasSelection",
+          "group": "1_modification@10"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Inkwell SO",
+      "properties": {
+        "inkwell.ollama.url": {
+          "type": "string",
+          "default": "http://127.0.0.1:11434",
+          "description": "Local Ollama HTTP origin (loopback only)."
+        },
+        "inkwell.ollama.model": {
+          "type": "string",
+          "default": "qwen3:4b",
+          "description": "Installed Ollama model to use for spelling corrections."
+        },
+        "inkwell.ollama.timeoutMs": {
+          "type": "integer",
+          "minimum": 1000,
+          "maximum": 120000,
+          "default": 30000,
+          "description": "Maximum time to wait for an Ollama response, in milliseconds."
+        },
+        "inkwell.spellcheck.dialect": {
+          "type": "string",
+          "enum": [
+            "preserve",
+            "en-US",
+            "en-GB"
+          ],
+          "default": "preserve",
+          "description": "Regional spelling convention."
+        },
+        "inkwell.spellcheck.sensitivity": {
+          "type": "string",
+          "enum": [
+            "conservative",
+            "standard"
+          ],
+          "default": "conservative",
+          "description": "Spelling correction confidence policy."
+        },
+        "inkwell.spellcheck.customWords": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [],
+          "description": "Words that must remain exactly as written."
+        }
+      }
+    }
+  },
   "scripts": {
     "start": "node src/server.mjs",
     "test": "node --test"
